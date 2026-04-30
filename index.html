@@ -186,14 +186,7 @@ body {
   font-size: 0.85em;
   flex-shrink: 0;
 }
-/* Hover only on devices with actual hover (desktop/mouse) */
-@media (hover: hover) {
-  .option-btn:hover {
-    background: rgba(252,224,41,0.15);
-    border-color: var(--yellow);
-    transform: translateX(5px);
-  }
-}
+/* Hover removed for WeChat X5 compatibility */
 .option-btn:active {
   background: rgba(252,224,41,0.2);
   border-color: var(--yellow);
