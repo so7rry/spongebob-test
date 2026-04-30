@@ -192,6 +192,12 @@ body {
 .option-btn:active {
   transform: scale(0.98);
 }
+.option-btn:focus,
+.option-btn:focus-visible {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+  outline: none;
+}
 
 /* ===== RESULT SCREEN ===== */
 #result {
@@ -841,6 +847,7 @@ let currentQ = 0;
 let scores = {};
 
 function startTest() {
+  document.activeElement?.blur();
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('question').classList.add('active');
   currentQ = 0;
@@ -867,6 +874,7 @@ function showQuestion() {
     btn.style.animationDelay = (i * 0.1) + 's';
     btn.innerHTML = `<span class="opt-label">${opt.label}</span>${opt.text}`;
     btn.onclick = () => {
+      document.activeElement?.blur();
       // Add weights to scores
       for (const [key, w] of Object.entries(opt.weights)) {
         scores[key] = (scores[key] || 0) + w;
