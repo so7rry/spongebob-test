@@ -171,6 +171,8 @@ body {
   align-items: center;
   gap: 12px;
   animation: fadeInUp 0.5s ease backwards;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .option-btn .opt-label {
   display: inline-flex;
@@ -184,18 +186,23 @@ body {
   font-size: 0.85em;
   flex-shrink: 0;
 }
-.option-btn:hover {
-  background: rgba(252,224,41,0.15);
-  border-color: var(--yellow);
-  transform: translateX(5px);
+/* Hover only on devices with actual hover (desktop/mouse) */
+@media (hover: hover) {
+  .option-btn:hover {
+    background: rgba(252,224,41,0.15);
+    border-color: var(--yellow);
+    transform: translateX(5px);
+  }
 }
 .option-btn:active {
+  background: rgba(252,224,41,0.2);
+  border-color: var(--yellow);
   transform: scale(0.98);
 }
 .option-btn:focus,
 .option-btn:focus-visible {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(255,255,255,0.12) !important;
   outline: none;
 }
 
@@ -901,12 +908,17 @@ let currentQ = 0;
 let scores = {};
 
 function startTest() {
-  document.activeElement?.blur();
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('question').classList.add('active');
-  currentQ = 0;
-  scores = {};
-  showQuestion();
+  // Force blur to clear any sticky hover/focus from previous run
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    document.activeElement.blur();
+  }
+  setTimeout(() => {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('question').classList.add('active');
+    currentQ = 0;
+    scores = {};
+    showQuestion();
+  }, 50);
 }
 
 function showQuestion() {
@@ -928,13 +940,19 @@ function showQuestion() {
     btn.style.animationDelay = (i * 0.1) + 's';
     btn.innerHTML = `<span class="opt-label">${opt.label}</span>${opt.text}`;
     btn.onclick = () => {
-      document.activeElement?.blur();
-      // Add weights to scores
-      for (const [key, w] of Object.entries(opt.weights)) {
-        scores[key] = (scores[key] || 0) + w;
+      // Force blur to prevent sticky hover/focus on mobile
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
       }
-      currentQ++;
-      showQuestion();
+      // Small delay to ensure blur takes effect before DOM changes
+      setTimeout(() => {
+        // Add weights to scores
+        for (const [key, w] of Object.entries(opt.weights)) {
+          scores[key] = (scores[key] || 0) + w;
+        }
+        currentQ++;
+        showQuestion();
+      }, 50);
     };
     container.appendChild(btn);
   });
