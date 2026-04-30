@@ -616,6 +616,61 @@ const questions = [
       { label: "C", text: "像空气一样存在", weights: { water: 3, fred: 2, oldMan: 2 } },
       { label: "D", text: "他们大概不怎么想我", weights: { squidward: 2, selfPortrait: 2, firstDollar: 2 } }
     ]
+  },
+  {
+    text: "周末你一般怎么过？",
+    options: [
+      { label: "A", text: "从早忙到晚，不做什么正经事但很充实", weights: { spongebob: 2, iReady: 2, menu: 1 } },
+      { label: "B", text: "睡到自然醒，然后继续躺着", weights: { patrick: 2, fred: 2, water: 1 } },
+      { label: "C", text: "整理房间、写计划、给下周做准备", weights: { sandy: 2, krabs: 2, firstDollar: 1 } },
+      { label: "D", text: "一个人待着，谁也别找我", weights: { squidward: 2, selfPortrait: 2, mrsPuff: 1 } }
+    ]
+  },
+  {
+    text: "遇到陌生人搭讪，你的第一反应是？",
+    options: [
+      { label: "A", text: "热情回话，三分钟后变成好朋友", weights: { spongebob: 2, patrick: 2, iReady: 1 } },
+      { label: "B", text: "警惕——他想骗我钱", weights: { krabs: 2, fred: 2, oldMan: 1 } },
+      { label: "C", text: "礼貌回应然后火速离开", weights: { squidward: 2, mrsPuff: 2, karen: 1 } },
+      { label: "D", text: "假装没听见", weights: { water: 2, selfPortrait: 2, bubbleBass: 1 } }
+    ]
+  },
+  {
+    text: "你最喜欢什么类型的天气？",
+    options: [
+      { label: "A", text: "晴空万里——不出门就是浪费", weights: { spongebob: 2, sandy: 2, iReady: 1 } },
+      { label: "B", text: "阴天——适合睡觉和发呆", weights: { patrick: 2, water: 2, oldMan: 1 } },
+      { label: "C", text: "暴风雨——越混乱我越兴奋", weights: { bubbleBass: 2, fred: 2, krabs: 1 } },
+      { label: "D", text: "无所谓，反正我都在室内", weights: { squidward: 2, menu: 2, firstDollar: 1 } }
+    ]
+  },
+  {
+    text: "如果你能拥有一个超能力，你会选？",
+    options: [
+      { label: "A", text: "让所有人都开心", weights: { spongebob: 2, patrick: 2, iReady: 1 } },
+      { label: "B", text: "让所有人都闭嘴", weights: { squidward: 2, karen: 2, mrsPuff: 1 } },
+      { label: "C", text: "点石成金", weights: { krabs: 2, firstDollar: 2, bubbleBass: 1 } },
+      { label: "D", text: "隐身——这样谁也不会烦我", weights: { water: 2, selfPortrait: 2, fred: 1 } }
+    ]
+  },
+  {
+    text: "你在集体照里通常站在哪个位置？",
+    options: [
+      { label: "A", text: "最前面，比着耶", weights: { spongebob: 2, bubbleBass: 2, iReady: 1 } },
+      { label: "B", text: "最边上，随时准备撤离", weights: { squidward: 2, fred: 2, water: 1 } },
+      { label: "C", text: "后面，踮起脚尖露出半张脸", weights: { menu: 2, oldMan: 2, mrsPuff: 1 } },
+      { label: "D", text: "我没在照片里——我在拍照", weights: { selfPortrait: 2, karen: 2, sandy: 1 } }
+    ]
+  },
+  {
+    text: "你和朋友约饭，对方迟到了半小时，你会？",
+    options: [
+      { label: "A", text: "疯狂发消息——「你到哪了！！！」", weights: { spongebob: 2, fred: 2, iReady: 1 } },
+      { label: "B", text: "已经自己吃上了，他来不来无所谓", weights: { krabs: 2, patrick: 2, menu: 1 } },
+      { label: "C", text: "在心里给他记了一笔小黑账", weights: { squidward: 2, mrsPuff: 2, selfPortrait: 1 } },
+      { label: "D", text: "没关系，我本来也迟到了", weights: { water: 2, oldMan: 2, firstDollar: 1 } }
+    ]
+  },
   }
 ];
 
@@ -809,21 +864,21 @@ function getWeightedResult(scores) {
     }
   }
 
-  // Weight distribution designed for ~80% getting N/C/D results
-  // SSR: spongebob, patrick -> ~1% each
-  // SR: squidward, krabs -> ~5% each
-  // R: gary, sandy -> ~15% each
-  // N: fred, mrsPuff, oldMan -> ~25% each
-  // C: firstDollar, selfPortrait, menu, patrickRock, iReady -> ~8% each
-  // D: water -> ~3%
+  // Weight distribution designed for ~70% getting N/C/D results
+  // SSR: spongebob, patrick -> ~5% each
+  // SR: squidward, krabs -> ~6% each
+  // R: gary, sandy -> ~12% each
+  // N: fred, mrsPuff, oldMan -> ~15-20% each
+  // C: firstDollar, selfPortrait, menu, patrickRock, iReady -> ~5-7% each
+  // D: water -> ~2%
 
   // Apply rarity multipliers to tilt distribution
   const rarityMultipliers = {
-    spongebob: 1, patrick: 1,
+    spongebob: 3, patrick: 3,
     squidward: 5, krabs: 5,
-    gary: 15, sandy: 15,
-    fred: 30, mrsPuff: 25, oldMan: 22,
-    firstDollar: 8, selfPortrait: 8, menu: 8, patrickRock: 6, iReady: 6,
+    gary: 12, sandy: 12,
+    fred: 20, mrsPuff: 18, oldMan: 16,
+    firstDollar: 7, selfPortrait: 7, menu: 6, patrickRock: 5, iReady: 5,
     water: 3
   };
 
